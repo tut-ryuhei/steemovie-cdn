@@ -1,0 +1,50 @@
+[v-cloak] {
+  display: none;
+}
+
+.jumbotron.text-center {
+  padding-top: 120px;
+  padding-bottom: 0px;
+  background-color: white;
+}
+
+.jumbotron-heading {
+  font-size: 60px;
+  font-family: 'Segoe Script';
+}
+
+.jumbotron-footer {
+  font-size: 20px;
+  font-family: 'Segoe Script';
+}
+
+.luxbar-brand {
+  font-family: 'Segoe Script';
+}
+
+.card-header {
+  background-color: white;
+}
+
+#detail img {
+  width: 100%;
+}
+
+.article {
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
+
+.avatar {
+  display: block;
+  height: 30px;
+  max-width: 30px;
+}
+
+.login-header {
+  background-color: white;
+}
+
+.luxbar-menu-light {
+  background-color: white;
+}

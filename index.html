@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="robots" content="index, follow">
+    <meta name="application-name" content="Steemovie">
+    <meta name="description" content="最近見た映画のReviewを投稿して報酬を貰いましょう！">
+
+    <!-- SNS向け -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Steemovie | Steemブロックチェーン上の映画レビューサイト">
+    <meta property="og:description" content="最近見た映画のReviewを投稿して報酬を貰いましょう！">
+    <meta property="og:url" content="https://www.steemovie.site">
+    <meta property="og:site_name" content="Steemovie">
+    <meta property="og:image" content="https://cdn.steemitimages.com/DQmStnj7SQpSV6rz12JPAbthz89P2D6CGs9Q5wkAxG6QVHg/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@sub1243"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.steemitimages.com/DQmXhTVMRGawmUskUPsdyHnr6mF18yDbGCjfwRh6WyiVPQq/apple.png">
+    <link rel="shortcut icon" href="https://cdn.steemitimages.com/DQmStnj7SQpSV6rz12JPAbthz89P2D6CGs9Q5wkAxG6QVHg/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/balzss/luxbar/ae5835e2/build/luxbar.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+    <link rel="stylesheet" href="./styles/main.css"/>
+
+    <title>Steemovie (Prototyping)</title>
+
+  </head>
+  <body>
+  <div id="app">
+
+    <!-- Header -->
+    <header id="luxbar" class="luxbar-static">
+     <input type="checkbox" id="luxbar-checkbox" class="luxbar-checkbox">
+      <div class="luxbar-menu luxbar-menu-right luxbar-menu-light">
+        <ul class="luxbar-navigation">
+          <li class="luxbar-header">
+            <a @click="transPage('feed')" class="luxbar-brand">Steemovie</a>
+            <label class="luxbar-hamburger luxbar-hamburger-doublespin" for="luxbar-checkbox">
+              <span></span></label>
+          </li>
+          <li class="luxbar-item">
+            <a @click="transPage('explorer')">
+              <span v-cloak>Explorer</span>
+            </a>
+          </li>
+          <li class="luxbar-item" v-if="login == false">
+            <a @click="transPage('login')">
+              <span v-cloak>Sign in</span>
+            </a>
+          </li>
+          <li class="luxbar-item" v-if="login == true">
+            <a @click="transPage('post')">
+              <span v-cloak>Post</span>
+            </a>
+          </li>
+
+          <li class="luxbar-item dropdown" v-if="login == true">
+            <a @click="transPage('mypage')">
+                  <span v-cloak>
+                    <img v-bind:src="steem_user_image_path" class="rounded-circle avatar">
+                  </span>
+            </a>
+            <ul>
+              <li class="luxbar-item">
+                <a @click="transPage('mypage')">My page</a>
+              </li>
+              <li class="luxbar-item">
+                <a v-bind:href="steem_user_path">Steemit</a>
+              </li>
+              <li class="luxbar-item">
+                <a @click="transPage('logout')">Logout</a>
+              </li>
+            </ul>
+          </li>
+          <li class="luxbar-item">
+            <a @click="transPage('about')">
+              <span v-cloak>About</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <div id="feed" v-if="currentPage == 'feed'">
+
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Steemovie</h1>
+          <p class="lead text-muted">最近見た映画のReviewを投稿して報酬を貰いましょう！</p>
+        </div>
+      </section>
+
+      <div class="container">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active">New</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click="transPage('trend')">Trending</a>
+          </li>
+        </ul>
+      </div>
+
+      <br>
+
+       <div class="container">
+         <span v-cloak>
+           <div class="card-columns">
+              <div class="card" v-for="(feed, index) in feeds">
+                <img class="card-img-top" v-bind:src="ipfs_image_paths[index]" onerror="imgError(this);"/ alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title" @click="transPage('feed-detail', feed.permlink, feed.author)">{{feed.title}}</h5>
+                  <p class="card-text">@{{feed.author}} <i class="fas fa-dollar-sign"></i>{{displayPayout[index]}}</p>
+                </div>
+              </div>
+          </div>
+        </span>
+      </div>
+    </div> <!-- id=feed -->
+
+    <div id="trend" v-if="currentPage == 'trend'">
+      <span v-cloak>
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Steemovie</h1>
+          <p class="lead text-muted">最近見た映画のReviewを投稿して報酬を貰いましょう！</p>
+        </div>
+      </section>
+      <div class="container">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" @click="transPage('feed')">New</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active">Trending</a>
+          </li>
+        </ul>
+      </div>
+      <br>
+       <div class="container">
+         <div class="card-columns">
+            <div class="card" v-for="(trend_feed, index) in trend_feeds">
+              <img class="card-img-top" v-bind:src="trend_ipfs_image_paths[index]" onerror="imgError(this);" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title" @click="transPage('feed-detail', trend_feed.permlink, trend_feed.author)">{{trend_feed.title}}</h5>
+                <p class="card-text">@{{trend_feed.author}} <i class="fas fa-dollar-sign"></i>{{trend_displayPayout[index]}}</p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </span>
+    </div>
+    <!-- trend -->
+
+    <div id="explorer" v-if="currentPage == 'explorer'">
+      <span v-cloak>
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading text-danger">Explorer</h1>
+          <p>
+            <button type="button" class="btn btn-danger my-2" @click="netflix">Netflix</button>
+            <button type="button" class="btn btn-primary my-2" @click="prime">Prime Video</button>
+            <button type="button" class="btn btn-success my-2" @click="hulu">Hulu</button>
+            <button type="button" class="btn btn-danger my-2" @click="youtube">Youtube</button>
+            <button type="button" class="btn btn-light my-2" @click="theater">Theater</button>
+            <button type="button" class="btn btn-dark my-2" @click="other">Other</button>
+          </p>
+        </div>
+      </section>
+       <div class="container">
+         <div class="card-columns">
+            <div class="card" v-for="(explorer, index) in explorers">
+              <img class="card-img-top" v-bind:src="explorer_ipfs_image_paths[index]" onerror="imgError(this);"/ alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title" @click="transPage('feed-detail', explorer.permlink, explorer.author)">{{explorer.title}}</h5>
+                <p class="card-text">@{{explorer.author}} <i class="fas fa-dollar-sign"></i>{{explorer_displayPayout[index]}}</p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </span>
+    </div>
+
+    <!-- Feed Detail -->
+    <div id="feed-detail" v-if="currentPage == 'feed-detail'">
+        <div class="container" id="detail">
+          <div class="article">
+            <div class="mx-auto" style="width: 600px;" v-html="content"></div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Login -->
+    <div id="login" v-if="currentPage == 'login'">
+      <span v-cloak>
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Sign in</h1>
+        </div>
+      </section>
+
+      <div class="container pt-3">
+        <div class="row justify-content-sm-center">
+          <div class="col-sm-6 col-md-4">
+
+            <div class="card border-info text-center">
+              <div class="card-header login-header">
+                Steem Connect
+              </div>
+              <div class="card-body">
+                <img src="https://cdn.steemitimages.com/DQmXhTVMRGawmUskUPsdyHnr6mF18yDbGCjfwRh6WyiVPQq/apple.png">
+                <form class="form-signin">
+                  <br>
+                  <a class="btn btn-lg btn-primary btn-block mb-1" type="submit" :href="link">Sign in</a>
+                  <br>
+                  <a href="https://signup.steemit.com/" class="float-right">Don't have a Steem account?</a>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        </span>
+      </div>
+
+  </div>
+    <span v-cloak>
+    <div id="mypage" v-if="currentPage == 'mypage'">
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">My page</h1>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="card mx-auto" style="width: 38rem;" v-for="(mypage, index) in mypages">
+          <img class="card-img-top" v-bind:src="mypage_ipfs_image_paths[index]" onerror="imgError(this);" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">{{mypage.title}}</h4>
+              <p class="card-text">{{mypage.created.slice(0,10)}} <i class="fas fa-dollar-sign"></i>{{mypage_displayPayout[index]}}</p>
+              <a @click="transPage('feed-detail', mypage.permlink, mypage.author)" class="btn btn-primary">Read more</a>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div> <!-- id=mypage -->
+
+    <!-- Post -->
+    <div id="post" v-if="currentPage == 'post'">
+      <span v-cloak>
+      <div class="container article mx-auto" style="width: 580px;">
+        <form>
+            <span v-cloak>
+            <div class="form-group">
+              <label>Movie Title</label>
+              <input type="text" class="form-control" name="mtitle" id="mtitle" placeholder="タイトルを追加">
+            </div>
+            <div class="form-group">
+              <label>Where</label>
+              <select class="form-control" id="where">
+                <option value="steemovie-netflix">Netflix</option>
+                <option value="steemovie-primevideo">Prime Video</option>
+                <option value="steemovie-hulu">Hulu</option>
+                <option value="steemovie-youtube">YouTube</option>
+                <option value="steemovie-theater">Theater</option>
+                <option value="steemovie-other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Rating</label>
+              <select class="form-control" id="rating">
+                <option value="★★★★★ (5/5)">★★★★★ (5/5)</option>
+                <option value="★★★★ (4/5)">★★★★ (4/5)</option>
+                <option value="★★★ (3/5)">★★★ (3/5)</option>
+                <option value="★★ (2/5)">★★ (2/5)</option>
+                <option value="★ (1/5)">★ (1/5)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Review Title</label>
+              <input type="text" class="form-control" name="title" id="title" placeholder="タイトルを追加">
+            </div>
+            <div class="form-group">
+              <label>Tag</label>
+              <input type="text" class="form-control" name="tags" id="tags" placeholder="「steemovie」と「カテゴリ」のタグの2つが自動挿入されます。">
+            </div>
+            <div class="form-group">
+              <label>Review</label>
+              <textarea placeholder="review" class="form-control" rows="7" id="content" @keyup="preview()" @keydown="preview()"></textarea>
+            </div>
+            <div class="form-group">
+              <label>
+                <span class="btn btn-success">Image
+                  <input type="file" id="insertImage" onchange="insert(this)" style="display:none">
+                </span>
+              </label>
+              <button type="button" class="btn btn-success float-right" @click="comment()">Post</button>
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+              <label>Preview</label>
+              <div class="container" id="preview"></div>
+            </div>
+          </span>
+          </form>
+        </div>
+      </div>
+    </span>
+
+    <div id="about" v-if="currentPage == 'about'">
+      <span v-cloak>
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">About</h1>
+        </div>
+      </section>
+
+      <div class="container">
+        <h2>What is Steemovie?</h2>
+        <br>
+        <p>Steemovieは、<a href="https://steem.com/">Steem</a>ブロックチェーン上の映画レビュー投稿サイトです。</p>
+        <p>レビューを投稿することで、評価に応じてSteemトークンによる報酬を受け取ることができます。</p>
+        <p>現在、プロトタイピングの段階にあるのでバグや未実装の機能が多いですが、順次更新していきます。</p>
+        <p>何かご連絡がございましたら、<a href="https://www.shogo.tokyo">@shogo</a>まで宜しくお願い致します。</p>
+      </div>
+
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h4 class="jumbotron-footer">Created by <a href="https://www.shogo.tokyo">@shogo</a></h4>
+        </div>
+      </section>
+    </span>
+    </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/steemconnect@3.0.0-beta.1"></script>
+    <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="./src/components/buffer.js"></script>
+    <script src="./src/components/ipfs.js"></script>
+    <script src="./src/app.js"></script>
+  </body>
+</html>
