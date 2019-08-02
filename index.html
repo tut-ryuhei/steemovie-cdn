@@ -114,7 +114,7 @@
          <span v-cloak>
            <div class="card-columns">
               <div class="card" v-for="(feed, index) in feeds">
-                <img class="card-img-top" v-bind:src="ipfs_image_paths[index]" onerror="imgError(this);"/ alt="Card image cap">
+                <img class="card-img-top" v-bind:src="ipfs_image_paths[index]" onerror="imgError(this);"/ @click="transPage('feed-detail', feed.permlink, feed.author)" alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title" @click="transPage('feed-detail', feed.permlink, feed.author)">{{feed.title}}</h5>
                   <p class="card-text">@{{feed.author}} <i class="fas fa-dollar-sign"></i>{{displayPayout[index]}}</p>
@@ -147,7 +147,7 @@
        <div class="container">
          <div class="card-columns">
             <div class="card" v-for="(trend_feed, index) in trend_feeds">
-              <img class="card-img-top" v-bind:src="trend_ipfs_image_paths[index]" onerror="imgError(this);" alt="Card image cap">
+              <img class="card-img-top" v-bind:src="trend_ipfs_image_paths[index]" onerror="imgError(this);" @click="transPage('feed-detail', trend_feed.permlink, trend_feed.author)" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title" @click="transPage('feed-detail', trend_feed.permlink, trend_feed.author)">{{trend_feed.title}}</h5>
                 <p class="card-text">@{{trend_feed.author}} <i class="fas fa-dollar-sign"></i>{{trend_displayPayout[index]}}</p>
@@ -177,7 +177,7 @@
        <div class="container">
          <div class="card-columns">
             <div class="card" v-for="(explorer, index) in explorers">
-              <img class="card-img-top" v-bind:src="explorer_ipfs_image_paths[index]" onerror="imgError(this);"/ alt="Card image cap">
+              <img class="card-img-top" v-bind:src="explorer_ipfs_image_paths[index]" onerror="imgError(this);"/ @click="transPage('feed-detail', explorer.permlink, explorer.author)" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title" @click="transPage('feed-detail', explorer.permlink, explorer.author)">{{explorer.title}}</h5>
                 <p class="card-text">@{{explorer.author}} <i class="fas fa-dollar-sign"></i>{{explorer_displayPayout[index]}}</p>
@@ -240,11 +240,10 @@
 
       <div class="container">
         <div class="card mx-auto" style="width: 38rem;" v-for="(mypage, index) in mypages">
-          <img class="card-img-top" v-bind:src="mypage_ipfs_image_paths[index]" onerror="imgError(this);" alt="Card image cap">
+          <img class="card-img-top" v-bind:src="mypage_ipfs_image_paths[index]" onerror="imgError(this);" @click="transPage('feed-detail', mypage.permlink, mypage.author)" alt="Card image cap">
             <div class="card-body">
-              <h4 class="card-title">{{mypage.title}}</h4>
-              <p class="card-text">{{mypage.created.slice(0,10)}} <i class="fas fa-dollar-sign"></i>{{mypage_displayPayout[index]}}</p>
-              <a @click="transPage('feed-detail', mypage.permlink, mypage.author)" class="btn btn-primary">Read more</a>
+              <h4 class="card-title" @click="transPage('feed-detail', mypage.permlink, mypage.author)">{{mypage.title}}</h4>
+              <p class="card-text">{{mypage.created.slice(0,10)}} @{{mypage.author}} <i class="fas fa-dollar-sign"></i>{{mypage_displayPayout[index]}}</p>
             </div>
           </div>
         </div>
