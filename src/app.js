@@ -557,7 +557,15 @@ var app = new Vue({
         .toString(36)
         .substring(2);
 
-      const title = $("#title").val();
+      let titlecheck = $("#title").val();
+      let title = '';
+
+      if(titlecheck) {
+        title = titlecheck;
+      } else {
+        title = 'Steemovie';
+      }
+
       const tags = $("#tags").val();
       const where = $("#where").val();
       const displaywhere = $("#where").val().slice(10).toUpperCase();

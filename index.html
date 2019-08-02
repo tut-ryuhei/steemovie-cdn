@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.rawgit.com/balzss/luxbar/ae5835e2/build/luxbar.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Rock+Salt&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles/main.css"/>
 
     <title>Steemovie (Prototyping)</title>
@@ -254,6 +255,15 @@
     <div id="post" v-if="currentPage == 'post'">
       <span v-cloak>
       <div class="container article mx-auto" style="width: 580px;">
+
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">お知らせ</h4>
+          <p>IPFSへの画像Upload機能の調子が悪いです。Steemitなどでアップロードした画像を張り付けることができます。</p>
+          <hr>
+          <p class="mb-0">また、Steemitなどで #steemovieタグを付けることでも投稿することができます。</p>
+        </div>
+
+
         <form>
             <span v-cloak>
             <div class="form-group">
@@ -344,7 +354,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/steemconnect@3.0.0-beta.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/steemconnect@3.0.3"></script>
     <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
