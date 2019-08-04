@@ -136,9 +136,9 @@ async function _content(permlink, author) {
     detail_payout = parseFloat(detail_pending) + parseFloat(detail_total) + parseFloat(detail_curator);
     detail_displayPayout = detail_payout.toFixed(3);
 
-    content = "<h3>" + marked(result.title, {sanitize:true}) + "</h3>" +
+    content = "<h3>" + DOMPurify.sanitize(marked(result.title)) + "</h3>" +
       "<p>@" + result.author + " | " + result.created.slice(0,10) + "</p>" +
-      "<br>" + marked(result.body, {sanitize:true}) + "<br>"
+      "<br>" + DOMPurify.sanitize(marked(result.body)) + "<br>"
     ;
 
     var replies = `
@@ -201,7 +201,7 @@ async function _content(permlink, author) {
         reply_author_image = "https://steemitimages.com/u/" + result[i].author + "/avatar";
 
         replies = replies + `<div class="alert alert-success" role="alert"><h5 class="alert-heading">@` + result[i].author + "</h5>" +
-        "<p>" + marked(result[i].body,{sanitize:true}) + "</p></div><br>";
+        "<p>" + DOMPurify.sanitize(marked(result[i].body)) + "</p></div><br>";
 
       }
       app.content = content + replies;
@@ -607,8 +607,6 @@ var access_token = new URLSearchParams(document.location.search).get('access_tok
 app.steem_user_path = STEEM_URL + '@' + app.username;
 app.steem_user_image_path = `https://steemitimages.com/u/` + app.username + `/avatar`;
 
-//マイページ
-
 if (access_token) {
   app.login = true;
 
@@ -640,9 +638,7 @@ if (access_token) {
       for (var i = 0; i < result.length; i++) {
           var json = JSON.parse(result[i].json_metadata);
 
-          //if (json.tags[0] == STEEMOVIE) {
           mypages.push(result[i]);
-          //}
 
           mypage_renderingImagePaths(result)
           app.mypages = mypages;
