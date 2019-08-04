@@ -2,6 +2,19 @@
   display: none;
 }
 
+ul li .luxbar-item {
+    display:block;
+    position:relative;
+    z-index:9999;
+}
+
+.luxbar-menu-right {
+  display:block;
+  position:relative;
+  z-index:100;
+  background-color: white;
+}
+
 .jumbotron.text-center {
   padding-top: 100px;
   padding-bottom: 0px;
@@ -42,9 +55,5 @@
 }
 
 .login-header {
-  background-color: white;
-}
-
-.luxbar-menu-light {
   background-color: white;
 }
