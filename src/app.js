@@ -211,7 +211,7 @@ async function _content(permlink, author) {
 
 //Get Preveiw in Post page
 function _preview() {
-  $("#preview").html(marked($("#content").val(), {sanitize:true}));
+  $("#preview").html(DOMPurify.sanitize(marked($("#content").val())));
 }
 
 function vote() {
