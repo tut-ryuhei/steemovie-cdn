@@ -256,7 +256,7 @@
         <div class="container">
           <div class="card-columns">
             <div class="card" v-for="(mypage, index) in mypages">
-              <img class="card-img-top" v-bind:src="mypage_image_paths[index]" onerror="imgError(this);" @click="transPage('feed-detail', mypage.permlink, mypage.author)" alt="MyPage Image">
+              <img class="card-img-top" v-bind:src="mypage_ipfs_image_paths[index]" onerror="imgError(this);" @click="transPage('feed-detail', mypage.permlink, mypage.author)" alt="MyPage Image">
               <div class="card-body">
                 <h4 class="card-title" @click="transPage('feed-detail', mypage.permlink, mypage.author)">{{mypage.title}}</h4>
                 <p class="card-text">{{mypage.created.slice(0,10)}} @{{mypage.author}} <i class="fas fa-dollar-sign"></i>{{mypage_displayPayout[index]}}</p>
