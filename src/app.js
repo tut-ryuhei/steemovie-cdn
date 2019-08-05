@@ -154,9 +154,32 @@ async function _content(permlink, author) {
               @` + result.author + " | " + result.created.slice(0,10) +`
           </div>
           <div class="form-group">
-            <button type="button" class="btn btn-danger" onclick="vote()">
+
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalvote">
               Vote <span class="badge badge-light">` + num + `</span>
             </button>
+            <div class="modal fade" id="modalvote" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="label1">Upvote</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <input type="range" value="100" min="1" max="100" step="1"
+                    oninput="document.getElementById('output1').value=this.value">
+                    <output id="output1">100</output>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="vote()">Upvote</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <button type="button" class="btn btn-primary">
               Payout <span class="badge badge-light">$` + detail_displayPayout + `</span>
             </button>
@@ -185,21 +208,6 @@ async function _content(permlink, author) {
               </div>
             </div>
 
-          </div>
-
-          <div class="form-group">
-            <select class="form-control" id="power">
-              <option value="100">Voting @ 100%</option>
-              <option value="10">Voting @ 10%</option>
-              <option value="20">Voting @ 20%</option>
-              <option value="30">Voting @ 30%</option>
-              <option value="40">Voting @ 40%</option>
-              <option value="50">Voting @ 50%</option>
-              <option value="60">Voting @ 60%</option>
-              <option value="70">Voting @ 70%</option>
-              <option value="80">Voting @ 80%</option>
-              <option value="90">Voting @ 90%</option>
-            </select>
           </div>
 
           <br><br>
@@ -243,7 +251,7 @@ function vote() {
 
   const voter = app.username;
 
-  var power = $("#power").val();
+  var power = $("#output1").val();
   Number(power);
   var weight = power * 100;
 
@@ -253,7 +261,7 @@ function vote() {
   api.vote(voter, author, permlink, weight, function (err, res) {
 
     if (!err) {
-      alert($("#power").val() + "%Voteに成功しました。")
+      alert($("#output1").val() + "%Voteに成功しました。")
     } else {
       alert("Error, please try again later")
     }
