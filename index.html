@@ -200,6 +200,7 @@
     <!-- Login -->
     <div id="login" v-if="currentPage == 'login'">
       <span v-cloak>
+
       <section class="jumbotron text-center">
         <div class="container">
           <h1 class="jumbotron-heading">Sign in</h1>
@@ -226,18 +227,21 @@
             </div>
           </div>
         </div>
-        </span>
       </div>
+      </span>
+    </div>
 
-  </div>
-    <span v-cloak>
+
     <div id="mypage" v-if="currentPage == 'mypage'">
+
+      <span v-cloak>
       <section class="jumbotron text-center">
         <div class="container">
           <h1 class="jumbotron-heading">My page</h1>
         </div>
       </section>
 
+      <!--
       <div class="container">
         <div class="card mx-auto" style="width: 38rem;" v-for="(mypage, index) in mypages">
           <img class="card-img-top" v-bind:src="mypage_ipfs_image_paths[index]" onerror="imgError(this);" @click="transPage('feed-detail', mypage.permlink, mypage.author)" alt="Card image cap">
@@ -247,13 +251,26 @@
             </div>
           </div>
         </div>
+      -->
+
+        <div class="container">
+          <div class="card-columns">
+            <div class="card" v-for="(mypage, index) in mypages">
+              <img class="card-img-top" v-bind:src="mypage_image_paths[index]" onerror="imgError(this);" @click="transPage('feed-detail', mypage.permlink, mypage.author)" alt="MyPage Image">
+              <div class="card-body">
+                <h4 class="card-title" @click="transPage('feed-detail', mypage.permlink, mypage.author)">{{mypage.title}}</h4>
+                <p class="card-text">{{mypage.created.slice(0,10)}} @{{mypage.author}} <i class="fas fa-dollar-sign"></i>{{mypage_displayPayout[index]}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </span>
     </div> <!-- id=mypage -->
 
     <!-- Post -->
     <div id="post" v-if="currentPage == 'post'">
       <span v-cloak>
-      <div class="container article mx-auto" style="width: 580px;">
+      <div class="container article mx-auto d-block">
 
         <div class="alert alert-success" role="alert">
           <h4 class="alert-heading">お知らせ</h4>
