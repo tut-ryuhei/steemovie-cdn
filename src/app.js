@@ -160,6 +160,31 @@ async function _content(permlink, author) {
             <button type="button" class="btn btn-primary">
               Payout <span class="badge badge-light">$` + detail_displayPayout + `</span>
             </button>
+
+            <button type="button" class="btn btn-warning float-right" data-toggle="modal" data-target="#modal1">
+              Share
+            </button>
+            <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="label1">Share</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Steemit: https://steemit.com` + result.url + `</p>
+                    <p>SteemPeak: https://steempeak.com` + result.url +`</p>
+                    <p>Busy: https://busy.org` + result.url + `</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <div class="form-group">
